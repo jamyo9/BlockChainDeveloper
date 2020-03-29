@@ -64,7 +64,7 @@ class Blockchain {
     _addBlock(block) {
         let self = this;
         return new Promise(async (resolve, reject) => {
-            const height = self.getChainHeight();
+            const height = await self.getChainHeight();
             block.height = height + 1;
             // UTC timestamp
             block.time = new Date().getTime().toString().slice(0, -3);
@@ -213,7 +213,7 @@ class Blockchain {
                 
                 if(block.height > 0) {
                     let previousBlockHash = block.previousBlockHash;
-                    let blockHash = chain[block.height-1].hash;
+                    let blockHash = self.chain[block.height-1].hash;
                     if(blockHash != previousBlockHash){
                         errorLog.push(`Previous Hash does not match of block: ${block.height}`);
                     }

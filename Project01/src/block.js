@@ -41,7 +41,7 @@ class Block {
             // Save in auxiliary variable the current block hash
             let blockHash = self.hash;
             // Recalculate the hash of the Block
-            self.hash = '';
+            self.hash = null;
             let newHash = SHA256(JSON.stringify(self)).toString();
             // Comparing if the hashes changed
             // Returning the Block is not valid
@@ -60,6 +60,7 @@ class Block {
      *     or Reject with an error.
      */
     getBData() {
+        let self = this;
         // Getting the encoded data saved in the Block
         let blockHash = self.hash;
         // Decoding the data to retrieve the JSON representation of the object
