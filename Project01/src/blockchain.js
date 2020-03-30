@@ -209,7 +209,7 @@ class Blockchain {
                     if (!valid) {
                         errorLog.push(`No valid block: ${block.height}`);
                     }
-                });
+                }).catch(error => reject(error));
                 
                 if(block.height > 0) {
                     let previousBlockHash = block.previousBlockHash;
@@ -218,7 +218,7 @@ class Blockchain {
                         errorLog.push(`Previous Hash does not match of block: ${block.height}`);
                     }
                 }
-            }).catch(error => reject(error));
+            });
             resolve(errorLog);
         });
     }

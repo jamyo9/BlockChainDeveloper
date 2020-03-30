@@ -43,6 +43,7 @@ class Block {
             // Recalculate the hash of the Block
             self.hash = null;
             let newHash = SHA256(JSON.stringify(self)).toString();
+            self.hash = blockHash;
             // Comparing if the hashes changed
             // Returning the Block is not valid
             // Returning the Block is valid
@@ -62,13 +63,13 @@ class Block {
     getBData() {
         let self = this;
         // Getting the encoded data saved in the Block
-        let blockHash = self.hash;
+        let blockData = self.body;
         // Decoding the data to retrieve the JSON representation of the object
-        let blockJSON = hex2ascii(blockHash);
+        let blockJSON = hex2ascii(blockData);
         // Parse the data to an object to be retrieve.
-        let blockData = JSON.parse(blockJSON);
+        let data = JSON.parse(blockJSON);
         // Resolve with the data if the object isn't the Genesis block
-        return (blockData && self.height > 0) ? blockData : null;
+        return (data && self.height > 0) ? data : null;
     }
 }
 
