@@ -9,12 +9,14 @@ contract StarNotary is ERC721 {
     // Star data
     struct Star {
         string name;
+        string symbol;
     }
 
     // Implement Task 1 Add a name and symbol properties
     // name: Is a short name to your token
     // symbol: Is a short string like 'USD' -> 'American Dollar'
-    
+    //string private name;
+    //string private symbol;
 
     // mapping the Star with the Owner Address
     mapping(uint256 => Star) public tokenIdToStarInfo;
@@ -23,10 +25,10 @@ contract StarNotary is ERC721 {
 
     
     // Create Star using the Struct
-    function createStar(string memory _name, uint256 _tokenId) public { // Passing the name and tokenId as a parameters
-        Star memory newStar = Star(_name); // Star is an struct so we are creating a new Star
+    function createStar(string memory _name, string memory _symbol, uint256 _tokenId) public { // Passing the name and tokenId as a parameters
+        Star memory newStar = Star(_name, _symbol); // Star is an struct so we are creating a new Star
         tokenIdToStarInfo[_tokenId] = newStar; // Creating in memory the Star -> tokenId mapping
-        _mint(msg.sender, _tokenId); // _mint assign the the star with _tokenId to the sender address (ownership)
+        _mint(msg.sender, _tokenId); // _mint assign the the star with _tokenId to the sender address (ownership)        
     }
 
     // Putting an Star for sale (Adding the star tokenid into the mapping starsForSale, first verify that the sender is the owner)
@@ -55,8 +57,10 @@ contract StarNotary is ERC721 {
     }
 
     // Implement Task 1 lookUptokenIdToStarInfo
-    function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory) {
+    function lookUptokenIdToStarInfo (uint _tokenId) public view returns (string memory starName) {
         //1. You should return the Star saved in tokenIdToStarInfo mapping
+        Star memory star = tokenIdToStarInfo[_tokenId];
+        starName = star.name;
     }
 
     // Implement Task 1 Exchange Stars function
@@ -65,12 +69,20 @@ contract StarNotary is ERC721 {
         //2. You don't have to check for the price of the token (star)
         //3. Get the owner of the two tokens (ownerOf(_tokenId1), ownerOf(_tokenId1)
         //4. Use _transferFrom function to exchange the tokens.
+        address  owner1Address = ownerOf(_tokenId1);
+        address  owner2Address = ownerOf(_tokenId2);
+        require(msg.sender == owner1Address || msg.sender == owner2Address ,"The sender of the star is not the owner.");
+        _transferFrom(owner1Address, owner2Address, _tokenId1);
+        _transferFrom(owner2Address, owner1Address, _tokenId2);
     }
 
     // Implement Task 1 Transfer Stars
     function transferStar(address _to1, uint256 _tokenId) public {
         //1. Check if the sender is the ownerOf(_tokenId)
         //2. Use the transferFrom(from, to, tokenId); function to transfer the Star
+        address ownerAddress = ownerOf(_tokenId);
+        require(msg.sender == ownerAddress, "The sender is not the ownerOf the star.");
+        _transferFrom(ownerAddress, _to1, _tokenId);
     }
 
 }
