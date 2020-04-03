@@ -1,4 +1,6 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
+
+import "../coffeebase/SupplyChain.sol";
 
 /// Provides basic authorization control
 contract Ownable {
@@ -20,7 +22,7 @@ contract Ownable {
 
     /// Define a function modifier 'onlyOwner'
     modifier onlyOwner() {
-        require(isOwner());
+        require(isOwner(), "The Sender is not the Owner");
         _;
     }
 
