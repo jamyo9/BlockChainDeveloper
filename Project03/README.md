@@ -1,5 +1,12 @@
 # Coffee SupplyChain
 
+Truffle v5.0.2 (core: 5.0.2)
+Solidity v0.5.0 (solc-js)
+Node v12.1.0
+
+
+https://rinkeby.etherscan.io/address/0x0c955197099344f4f8288f685d0d852d6028f7c7#code
+
 ⚠️  Important ⚠️
 If you're using an HDWalletProvider, it must be Web3 1.0 enabled or your migration will hang.
 
