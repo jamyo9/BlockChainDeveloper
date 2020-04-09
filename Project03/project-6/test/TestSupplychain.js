@@ -57,7 +57,6 @@ contract('SupplyChain', function(accounts) {
         */
        supplyChain.Harvested((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Harvested by calling function harvestItem()
@@ -90,11 +89,11 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Processed()
         supplyChain.Processed((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Processed by calling function processtItem()
-        await supplyChain.processItem(upc);
+        supplyChain.addFarmer(originFarmerID);
+        await supplyChain.processItem(upc, { from: originFarmerID });
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
@@ -113,11 +112,10 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Packed()
         supplyChain.Packed((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Packed by calling function packItem()
-        await supplyChain.packItem(upc);
+        await supplyChain.packItem(upc, { from: originFarmerID });
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
@@ -136,11 +134,10 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event ForSale()
         supplyChain.ForSale((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as ForSale by calling function sellItem()
-        await supplyChain.sellItem(upc,productPrice);
+        await supplyChain.sellItem(upc,productPrice, { from: originFarmerID });
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
@@ -160,12 +157,11 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Sold()
         var event = supplyChain.Sold((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Sold by calling function buyItem()
-        supplyChain.addDistributor(distributorID);
-        await supplyChain.buyItem(upc,{value: productPrice, from:distributorID});
+        // supplyChain.addDistributor(distributorID);
+        await supplyChain.buyItem(upc,{value: productPrice, from: distributorID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
@@ -184,11 +180,11 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Shipped()
         var event = supplyChain.Shipped((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Sold by calling function buyItem()
-        await supplyChain.shipItem(upc,{from: distributorID});
+        // supplyChain.addDistributor(distributorID);
+        await supplyChain.shipItem(upc, {from: originFarmerID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
         const resultBufferTwo = await supplyChain.fetchItemBufferTwo.call(upc);
@@ -207,10 +203,10 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Received()
         var event = supplyChain.Received((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Sold by calling function buyItem()
+        supplyChain.addRetailer(retailerID);
         await supplyChain.receiveItem(upc,{from: retailerID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
@@ -230,10 +226,10 @@ contract('SupplyChain', function(accounts) {
         // Watch the emitted event Purchased()
         var event = supplyChain.Purchased((error, event) => {
             eventEmitted = true;
-            // console.log("Yes");
         });
 
         // Mark an item as Sold by calling function buyItem()
+        // supplyChain.addConsumer(consumerID);
         await supplyChain.purchaseItem(upc, {from: consumerID});
 
         // Retrieve the just now saved item from blockchain by calling function fetchItem()
