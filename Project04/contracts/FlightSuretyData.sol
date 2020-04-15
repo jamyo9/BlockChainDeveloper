@@ -429,7 +429,6 @@ contract FlightSuretyData {
     *
     */
     function() external payable {
-        fund();
     }
 }
 
